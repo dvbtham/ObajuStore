@@ -6,12 +6,14 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using Model.Models;
     using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Data.Entity.Validation;
     using System.Diagnostics;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<ObajuStoreDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ObajuStore.Data.ObajuStoreDbContext>
     {
         public Configuration()
         {
@@ -49,12 +51,13 @@
                     BirthDay = Convert.ToDateTime("15/09/1996"),
                     Gender = "Nam",
                     Image = CommonConstants.DefaultAvatar,
-                    FullName = "David Thâm",
+                    FullName = "Thâm David",
                     Address = "Mang Yang - Gia Lai",
                     CreatedDate = DateTime.Now,
                     CreatedBy = "system",
                     PhoneNumberConfirmed = true,
-                    PhoneNumber = "01652130546"
+                    PhoneNumber = "01652130546",
+                    IsDeleted = false
                 };
 
                 manager.Create(user, adminPassword);
@@ -81,7 +84,8 @@
                     Name = "Không xác định",
                     Alias = "khong-xac-dinh",
                     CreatedBy = "system",
-                    Status = true
+                    Status = true,
+                    IsDeleted = false
                 };
                 context.Brands.Add(brand);
                 context.SaveChanges();
@@ -194,6 +198,19 @@
                     };
                     context.ProductCategories.Add(category);
                     context.SaveChanges();
+
+                    var category2 = new ProductCategory()
+                    {
+                        Name = "Nữ",
+                        Alias = "nu",
+                        DisplayOrder = 2,
+                        CreatedBy = "system",
+                        CreatedDate = DateTime.Now,
+                        Description = @"Danh mục nữ- được tạo mặc định bởi hệ thống",
+                        Status = true
+                    };
+                    context.ProductCategories.Add(category2);
+                    context.SaveChanges();
                 }
                 catch (DbEntityValidationException ex)
                 {
@@ -208,6 +225,7 @@
                 }
             }
         }
+        
 
         #endregion Methods
     }
